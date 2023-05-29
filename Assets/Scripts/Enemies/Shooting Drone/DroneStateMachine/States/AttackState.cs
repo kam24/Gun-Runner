@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using CharacterSM;
+using UnityEngine;
 
 namespace DroneStateMachine.States
 {
-    public class AttackState : State
+    public class AttackState : DroneState
     {
         private Coroutine _coroutine;
         private uint _projectiles;

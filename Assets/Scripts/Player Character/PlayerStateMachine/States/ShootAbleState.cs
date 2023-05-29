@@ -4,11 +4,11 @@ using System;
 
 namespace PlayerMovement.States
 {
-    public abstract class ShootAbleState : VerticalState
+    public abstract class ShootAbleState : VerticalState, IExtraState
     {
         private SubmachineGun _gun => Root.SubmachineGun;
 
-        public ShootAbleState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) { }
+        public ShootAbleState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) { }
 
         public override void Enter()
         {
@@ -31,30 +31,30 @@ namespace PlayerMovement.States
                 TryStartShooting();
         }
 
-        protected override void ChangeBaseState(BaseState state)
+        protected override void SwitchState<T>()
         {
             Reset();
-            base.ChangeBaseState(state);
+            base.SwitchState<T>();
         }
 
-        protected override void PushExtraState(IExtraState state)
+        protected override void PushExtraState<T>()
         {
             Reset();
-            base.PushExtraState(state);
+            base.PushExtraState<T>();
         }
           
         private void TryStartShooting()
         {
             if (_gun.HasBullets)
-                stateMachine.PushExtraState(character.ShootingState);
+                stateMachine.PushExtraState<ShootingState>();
 
             character.TargetAppeared -= TryStartShooting;
         }
 
         private void Reset() 
         {            
-            if (stateMachine.CurrentState is ShootingState)
-                stateMachine.PopExtraState(character.ShootingState); 
+            if (stateMachine.CurrentState is ShootingState shootingState)
+                stateMachine.PopExtraState(shootingState); 
         }
 
         private void OnAmmoDepleted()

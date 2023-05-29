@@ -3,11 +3,11 @@ using static PlayerCharacter;
 
 namespace PlayerMovement.States
 {
-    public abstract class VerticalState : BaseState
+    public abstract class VerticalState : PlayerState
     {
         protected bool _startJump = false;
 
-        public VerticalState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) 
+        public VerticalState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) 
         {
             InputHandler.SetLeftRightKeyHandler(OnLeftRightKey);
         }
@@ -26,33 +26,33 @@ namespace PlayerMovement.States
         {
             character.Jump();
             _startJump = false;
-            ChangeBaseState(character.InAirState);
+            SwitchState<InAirState>();
         }
 
         protected void DoStrafe()        
         {
             Strafe strafe = character.LastStrafe;
             if (strafe == Strafe.None)
-                PushExtraState(character.StrafeOnLineState);
+                PushExtraState<StrafeOnLineState>();
             else if (character.CheckWallAhead(strafe))
                 DoStrafeOnWall();
             else
-                PushExtraState(character.StrafeOnLineState);
+                PushExtraState<StrafeOnLineState>();
         }
 
         protected virtual void DoStrafeOnWall()
         {
-            PushExtraState(character.StrafeOnWallState);
+            PushExtraState<StrafeOnWallState>();
         }
 
-        protected virtual void ChangeBaseState(BaseState state)
+        protected virtual void SwitchState<T>() where T: PlayerState
         {
-            stateMachine.ChangeBaseState(state);
+            stateMachine.SwitchState<T>();
         }
 
-        protected virtual void PushExtraState(IExtraState state)
+        protected virtual void PushExtraState<T>() where T : IExtraState
         {
-            stateMachine.PushExtraState(state);
+            stateMachine.PushExtraState<T>();
         }
     }    
 }

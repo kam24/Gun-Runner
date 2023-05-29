@@ -4,7 +4,7 @@ namespace PlayerMovement.States
 {
     public class RunningState : ShootAbleState
     {
-        public RunningState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) 
+        public RunningState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) 
         {
             InputHandler.SetUpKeyHandler(OnUpKey);
             InputHandler.SetDownKeyHandler(OnDownKey);
@@ -24,7 +24,7 @@ namespace PlayerMovement.States
         public override void FixedUpdate(float time)
         {
             if (character.IsGrounded() == false)
-                ChangeBaseState(character.InAirState);
+                SwitchState<InAirState>();
             else if (_startJump)
                 Jump();
             else
@@ -38,7 +38,7 @@ namespace PlayerMovement.States
 
         public void OnDownKey()
         {
-            ChangeBaseState(character.RollingState);
+            SwitchState<RollingState>();
         }
     }
 }

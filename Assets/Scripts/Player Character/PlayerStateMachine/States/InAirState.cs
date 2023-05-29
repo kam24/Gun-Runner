@@ -4,7 +4,7 @@ namespace PlayerMovement.States
 {
     public class InAirState : VerticalState
     {
-        public InAirState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) 
+        public InAirState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) 
         {
             InputHandler.SetDownKeyHandler(OnDownKey);
         }
@@ -18,13 +18,13 @@ namespace PlayerMovement.States
         public override void FixedUpdate(float time)
         {
             if (character.IsGrounded())
-                stateMachine.ChangeBaseState(character.RunningState);
+                stateMachine.SwitchState<RunningState>();
         }
 
         public void OnDownKey()
         {
             character.SetFastFallDownVelocity();
-            stateMachine.ChangeBaseState(character.RollingState);
+            stateMachine.SwitchState<RollingState>();
         }
     }
 }

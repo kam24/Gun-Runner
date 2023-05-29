@@ -1,33 +1,38 @@
 ﻿using Assets.Scripts;
+using CharacterSM;
 using DroneStateMachine.States;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 namespace DroneStateMachine
 {
-    public class StateMachine : IStateSwitcher
+    public class DroneSM : StateMachine, IDisposable
     {
         public event Action SwitchingToAttackState;
         public event Action SwitchingToDyingState;
 
+        private ShootingDrone _character;
         private Health _health;
-        private List<State> _allStates;
-        private State _currentState;
+        private List<DroneState> _allStates;
+        private DroneState _currentState;
 
-        public void Initialize<T>(ShootingDrone character) where T : State
+        public DroneSM(ShootingDrone character)
         {
-            _allStates = new List<State>()
+            _character = character;
+        }
+
+        public override void Start<T>()
+        {
+            _allStates = new List<DroneState>()
             {
-                new AppearanceState(character,this),
-                new AttackState(character,this),
-                new ReloadingState(character,this),
-                new DyingState(character,this)
+                new AppearanceState(_character,this),
+                new AttackState(_character,this),
+                new ReloadingState(_character,this),
+                new DyingState(_character,this)
             };
             SwitchState<T>();
-            _health = character.Health;
+            _health = _character.Health;
             _health.Dying += OnDying;
             //Debug.Log(_currentState);
         }
@@ -38,7 +43,7 @@ namespace DroneStateMachine
             _health.Dying -= OnDying;
         }
 
-        public void SwitchState<T>() where T : State
+        public override void SwitchState<T>()
         {
             _currentState?.Exit();
             _currentState = _allStates.FirstOrDefault(s => s is T);
@@ -52,14 +57,19 @@ namespace DroneStateMachine
             //Debug.Log(_currentState);
         }
 
-        public void FixedUpdate(float time)
+        public override void FixedUpdate(float time)
         {
             _currentState.FixedUpdate(time);
         }
 
-        public void Finish()
+        public override void Finish()
         {
             _currentState.Exit();
+        }
+
+        public void Dispose()
+        {
+            _health.Dying -= OnDying;
         }
     }
 }

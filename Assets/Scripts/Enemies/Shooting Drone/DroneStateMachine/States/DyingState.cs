@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using CharacterSM;
+using UnityEngine;
 
 namespace DroneStateMachine.States
 {
-    public class DyingState : State
+    public class DyingState : DroneState
     {
         private bool _fallingDown;
         public DyingState(ShootingDrone character, IStateSwitcher stateSwitcher) : base(character, stateSwitcher)

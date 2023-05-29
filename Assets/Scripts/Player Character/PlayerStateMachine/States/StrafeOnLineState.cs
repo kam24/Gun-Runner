@@ -9,7 +9,7 @@ namespace PlayerMovement.States
     {
         private RunLine _runLine;
 
-        public StrafeOnLineState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) { }
+        public StrafeOnLineState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) { }
 
         public override void Enter()
         {

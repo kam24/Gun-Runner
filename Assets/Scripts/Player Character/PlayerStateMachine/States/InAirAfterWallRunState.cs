@@ -9,7 +9,7 @@ namespace PlayerMovement.States
 {
     public class InAirAfterWallRunState : InAirState
     {
-        public InAirAfterWallRunState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) { }
+        public InAirAfterWallRunState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) { }
 
         public override void Enter()
         {

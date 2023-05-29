@@ -5,7 +5,7 @@ namespace PlayerMovement.States
 {
     public class StrafeOnWallState : StrafeState, IExtraState
     {
-        public StrafeOnWallState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) { }
+        public StrafeOnWallState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) { }
 
         public override void Enter()
         {
@@ -31,7 +31,7 @@ namespace PlayerMovement.States
                 strafeDirection = true;
             }
             character.SetAnimationBool(character.AnimIDStrafeDirection, strafeDirection);
-            stateMachine.ChangeBaseState(character.WallRunState);
+            stateMachine.SwitchState<WallRunState>();
             return;
         }
     }

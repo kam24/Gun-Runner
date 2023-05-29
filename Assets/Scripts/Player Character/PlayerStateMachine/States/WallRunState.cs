@@ -6,7 +6,7 @@ namespace PlayerMovement.States
 {
     public class WallRunState : ShootAbleState
     {
-        public WallRunState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) 
+        public WallRunState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) 
         {
             InputHandler.SetLeftRightKeyHandler(OnLeftRightKey);
             InputHandler.SetDownKeyHandler(OnDownKey);
@@ -45,7 +45,7 @@ namespace PlayerMovement.States
             if ((int)character.LastStrafe == (int)character.WallRunning)
             {
                 base.OnLeftRightKey();
-                stateMachine.ChangeBaseState(character.InAirAfterWallRunState);
+                stateMachine.SwitchState<InAirAfterWallRunState>();
                 character.JumpForStrafe(character.LastStrafe);
             }
         }
@@ -53,7 +53,7 @@ namespace PlayerMovement.States
         public void OnDownKey()
         {
             character.LastStrafe = Strafe.None;
-            stateMachine.ChangeBaseState(character.RollingState);
+            stateMachine.SwitchState<RollingState>();
             DoStrafe();
         }
     }

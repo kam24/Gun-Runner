@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using CharacterSM;
+using UnityEngine;
 
 namespace DroneStateMachine.States
 {
-    public class ReloadingState : State
+    public class ReloadingState : DroneState
     {
         private Coroutine _coroutine;
 

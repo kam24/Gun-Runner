@@ -36,7 +36,7 @@ public class ShootingDrone : Damagable
     public float ReloadingTime => _reloadingTime;
     public float DelayBeforeFallingDown => _delayBeforeFallingDown;
 
-    public StateMachine StateMachine { get; private set; }
+    public DroneStateMachine.DroneSM StateMachine { get; private set; }
 
     private PlayerCharacter _target;
     private Vector3 TargetPosition => _target.transform.position;
@@ -57,8 +57,8 @@ public class ShootingDrone : Damagable
         transform.position = new Vector3(x, y, z);
         lastTargetPositionZ = TargetPosition.z;
 
-        StateMachine = new StateMachine();
-        StateMachine.Initialize<AppearanceState>(this);
+        StateMachine = new DroneSM(this);
+        StateMachine.Start<AppearanceState>();
     }
 
     private void OnTargetKilled()

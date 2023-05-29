@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using CharacterSM;
+using UnityEngine;
 
 namespace DroneStateMachine.States
 {
-    public class AppearanceState : State
+    public class AppearanceState : DroneState
     {
         //private Vector3 Position { get => character.transform.position; set => character.transform.position = value; }
         private float _speed;

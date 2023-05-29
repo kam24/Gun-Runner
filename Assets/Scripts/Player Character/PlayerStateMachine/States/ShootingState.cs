@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace PlayerMovement.States
 {
-    public class ShootingState : BaseState, IExtraState
+    public class ShootingState : PlayerState, IExtraState
     {
         public override InputHandler InputHandler => stateMachine.BaseState.InputHandler;
 
@@ -15,7 +15,7 @@ namespace PlayerMovement.States
         private bool _readyToAim;
         private bool _aiming;
 
-        public ShootingState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) { }
+        public ShootingState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) { }
 
         public override void Enter()
         {

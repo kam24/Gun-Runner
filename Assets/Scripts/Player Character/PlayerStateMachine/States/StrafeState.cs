@@ -5,12 +5,12 @@ using static PlayerCharacter;
 
 namespace PlayerMovement.States
 {
-    public abstract class StrafeState : BaseState, IExtraState
+    public abstract class StrafeState : PlayerState, IExtraState
     {
         protected Strafe _strafe;
         protected float _targetX;
 
-        public StrafeState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) { }
+        public StrafeState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) { }
 
         public override void Enter()
         {

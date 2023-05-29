@@ -1,10 +1,11 @@
 ﻿using PlayerMovement.Interfaces;
+using System;
 
 namespace PlayerMovement.States
 {
     public class RollingState : VerticalState
     {
-        public RollingState(PlayerCharacter character, StateMachine stateMachine) : base(character, stateMachine) 
+        public RollingState(PlayerCharacter character, PlayerStateMachine stateMachine) : base(character, stateMachine) 
         {
             InputHandler.SetUpKeyHandler(OnUpKey);
         }
@@ -26,7 +27,7 @@ namespace PlayerMovement.States
             if (character.IsGrounded() && _startJump) 
             {
                 Jump();
-                stateMachine.ChangeBaseState(character.InAirState);
+                stateMachine.SwitchState<InAirState>();
             }
         }
 
@@ -37,8 +38,10 @@ namespace PlayerMovement.States
 
         public void OnEnding()
         {
-            BaseState newState = character.IsGrounded() ? character.RunningState : character.InAirState;
-            stateMachine.ChangeBaseState(newState);
+            if (character.IsGrounded())
+                stateMachine.SwitchState<RunningState>();
+            else
+                stateMachine.SwitchState<InAirState>();
         }
     }
 }

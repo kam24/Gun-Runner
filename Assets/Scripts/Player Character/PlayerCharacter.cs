@@ -82,15 +82,6 @@ public class PlayerCharacter : Damagable
     public int AnimIDSideObstacle { get; private set; }
     public int AnimIDIsActive { get; private set; }
 
-    public RunningState RunningState { get; private set; }
-    public RollingState RollingState { get; private set; }
-    public InAirState InAirState { get; private set; }
-    public StrafeOnLineState StrafeOnLineState { get; private set; }
-    public StrafeOnWallState StrafeOnWallState { get; private set; }
-    public WallRunState WallRunState { get; private set; }
-    public InAirAfterWallRunState InAirAfterWallRunState { get; private set; }
-    public ShootingState ShootingState { get; private set; }
-
     public RunLine RunLine { get; private set; }
     public Strafe LastStrafe { get; set; }
     public WallRun WallRunning { get; set; }
@@ -114,7 +105,7 @@ public class PlayerCharacter : Damagable
     private float _wallCheckRayDistance;
 
     private Animator _animator;
-    private StateMachine _stateMachine;
+    private PlayerStateMachine _stateMachine;
     private bool _inputEnabled;
 
     private Transform _target;
@@ -139,7 +130,9 @@ public class PlayerCharacter : Damagable
         SetNormalRayDistance();
 
         InitAnimationIDs();
-        StartStateMachine();
+
+        _stateMachine = new PlayerStateMachine(this);
+        _stateMachine.Start<RunningState>();
 
         SetAnimationBool(AnimIDIsActive, true);
         _inputEnabled = true;
@@ -174,22 +167,6 @@ public class PlayerCharacter : Damagable
         AnimIDIsActive = Animator.StringToHash("Is Active");
     }
 
-    private void StartStateMachine()
-    {
-        _stateMachine = new StateMachine();
-
-        RunningState = new(this, _stateMachine);
-        RollingState = new(this, _stateMachine);
-        InAirState = new(this, _stateMachine);
-        StrafeOnLineState = new(this, _stateMachine);
-        StrafeOnWallState = new(this, _stateMachine);
-        WallRunState = new(this, _stateMachine);
-        InAirAfterWallRunState = new(this, _stateMachine);
-        ShootingState = new(this, _stateMachine);
-
-        _stateMachine.Initialize(RunningState, this);
-    }
-
     private void FixedUpdate()
     {
         float time = Time.fixedDeltaTime;
@@ -213,7 +190,7 @@ public class PlayerCharacter : Damagable
             _lastInjuryReason = LastStrafe == Strafe.Right ? InjuryReason.RightObstacle : InjuryReason.LeftObstacle;
 
             LastStrafe = Strafe.None;
-            _stateMachine.PushExtraState(StrafeOnLineState);
+            _stateMachine.PushExtraState<StrafeOnLineState>();
 
             ApplyDamage(2);
 
@@ -533,7 +510,7 @@ public class PlayerCharacter : Damagable
 
     private void OnRollingEnd()
     {
-        RollingState.OnEnding();
+        _stateMachine.OnRollingEnd();
     }
 
     private void OnStartShooting()
