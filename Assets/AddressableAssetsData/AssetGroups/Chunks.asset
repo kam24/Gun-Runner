@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Chunks
+  m_EditorClassIdentifier: 
+  m_GroupName: Chunks
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 9355ef47b531dc24fbb104ef266f4e84
+  m_SerializeEntries:
+  - m_GUID: e5c9fc97037042a41b6069cd1ff6e518
+    m_Address: Attack Chunk 01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 156d4d4c67ced55428accbbb8b95555c
+    m_Address: Attack Chunk 02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ba6be1e3db2dd1d4e88737aabbcc2b3e
+    m_Address: Chunk Medium 01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4bf98c3e22d39984c864c60963350838
+    m_Address: Chunk Medium 02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3255139ece3a6e5469246597b7da2223
+    m_Address: Chunk Starter 01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5e6ebf610be5e2d4586341c0f43bd72b
+    m_Address: Chunk Starter 02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1462013b5f219b347b1b90c0d94c1a3c
+    m_Address: Wall Run Chink 01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 732949f940a380544b73edd35b243e4c
+    m_Address: Wallrun Chunk 02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 9ac7debe07d84c144a3c01b78114a47b, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 23f4f6fdc2963844ba7b2b2191a2139b, type: 2}
+    - {fileID: 11400000, guid: 9d394f0fa58254f42943f7332007a14d, type: 2}

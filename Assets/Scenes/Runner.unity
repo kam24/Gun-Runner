@@ -3813,16 +3813,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _firstChunkStart: {fileID: 425175189}
   _starterChunks:
-  - {fileID: 4420468181685034937, guid: 3255139ece3a6e5469246597b7da2223, type: 3}
-  - {fileID: 2105517170262590239, guid: 5e6ebf610be5e2d4586341c0f43bd72b, type: 3}
+  - m_AssetGUID: 3255139ece3a6e5469246597b7da2223
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 5e6ebf610be5e2d4586341c0f43bd72b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   _mediumChunks:
-  - {fileID: 3748185951691971167, guid: ba6be1e3db2dd1d4e88737aabbcc2b3e, type: 3}
-  - {fileID: 1184941057341882143, guid: 4bf98c3e22d39984c864c60963350838, type: 3}
-  - {fileID: 2107973652095069526, guid: 1462013b5f219b347b1b90c0d94c1a3c, type: 3}
-  - {fileID: 1179591413551633570, guid: 732949f940a380544b73edd35b243e4c, type: 3}
+  - m_AssetGUID: ba6be1e3db2dd1d4e88737aabbcc2b3e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 4bf98c3e22d39984c864c60963350838
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 732949f940a380544b73edd35b243e4c
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 1462013b5f219b347b1b90c0d94c1a3c
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   _droneAttackChunks:
-  - {fileID: 6981106749150345768, guid: e5c9fc97037042a41b6069cd1ff6e518, type: 3}
-  - {fileID: 429890328163260428, guid: 156d4d4c67ced55428accbbb8b95555c, type: 3}
+  - m_AssetGUID: e5c9fc97037042a41b6069cd1ff6e518
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 156d4d4c67ced55428accbbb8b95555c
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   _chunkSpawnDistance: 30
   _lastChunkDestructionDistance: 10
 --- !u!114 &1037773995

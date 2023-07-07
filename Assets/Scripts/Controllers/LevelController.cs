@@ -8,7 +8,6 @@ public class LevelController : MonoBehaviour
     private EnemySpawner _enemySpawner;
     private ChunkFactory _chunkFactory;
     private Stage _stage;
-    private ushort _defeatedDrones;
 
     public void Init(EnemySpawner enemySpawner, ChunkFactory chunkFactory)
     {
@@ -60,9 +59,6 @@ public class LevelController : MonoBehaviour
     {
         _stage.Reset();
         _chunkFactory.SetSpawningMediumChunks();
-        _defeatedDrones++;
-        if (_defeatedDrones == _countOfDefeatedDronesToFinish)
-            _chunkFactory.SpawnFinish();
     }
 }
 

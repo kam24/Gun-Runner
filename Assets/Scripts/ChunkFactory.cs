@@ -1,33 +1,39 @@
+using Assets.Scripts;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class ChunkFactory : MonoBehaviour
 {
     [SerializeField] private Transform _firstChunkStart;
-    [SerializeField] private Chunk[] _starterChunks;
-    [SerializeField] private Chunk[] _mediumChunks;
-    [SerializeField] private Chunk[] _droneAttackChunks;
+    [SerializeField] private AssetReferenceGameObject[] _starterChunks;
+    [SerializeField] private AssetReferenceGameObject[] _mediumChunks;
+    [SerializeField] private AssetReferenceGameObject[] _droneAttackChunks;
     [SerializeField][Min(0)] private float _chunkSpawnDistance;
     [SerializeField][Min(0)] private float _lastChunkDestructionDistance;
 
     public event Action ChunkPassed;
 
-    private Chunk[] _chunksToSpawn;
-    private Stack<Chunk> _chunksPool;
-    private Queue<Chunk> _spawnedChunks;
-    private Chunk _currentChunk => _spawnedChunks.Peek();
-    private Chunk _lastChunk;
+    private AssetReferenceGameObject[] _chunksToSpawn;
+    private Stack<AssetReferenceGameObject> _chunksPool;
+    private Queue<ChunkLoader> _spawnedChunks;
+    private ChunkLoader _currentChunk => _spawnedChunks.Peek();
+    private ChunkLoader _lastChunk;
     private Transform _playerTransform;
     private bool canDestroyLastChunk;
     private bool canSpawnNextChunk;
 
     public void Init(Transform playerPosition)
     {
+        _spawnedChunks = new Queue<ChunkLoader>();
+
         _playerTransform = playerPosition;
-        _chunksPool = new Stack<Chunk>(Shuffle(_starterChunks));
-        _spawnedChunks = new Queue<Chunk>();
+
+        SetSpawningStartChunks();
         Spawn(_chunksPool.Pop());
+
         SetSpawningMediumChunks();
 
         canDestroyLastChunk = true;
@@ -36,25 +42,37 @@ public class ChunkFactory : MonoBehaviour
         enabled = true;
     }
 
+    public void SetSpawningStartChunks()
+    {
+        SetSpawningChunks(_starterChunks);
+    }
+
     public void SetSpawningMediumChunks()
     {
-        _chunksToSpawn = _mediumChunks;
-        ShuffleChunksPool();
+        SetSpawningChunks(_mediumChunks);
     }
 
     public void SetSpawningDroneAttackChunks()
     {
-        _chunksToSpawn = _droneAttackChunks;
+        SetSpawningChunks(_droneAttackChunks);
+    }
+
+    private void SetSpawningChunks(AssetReferenceGameObject[] chunks)
+    {
+        _chunksToSpawn = chunks;
         ShuffleChunksPool();
     }
 
     private void FixedUpdate()
     {
-        float playerDistance = _playerTransform.position.z - _currentChunk.Start.z;
+        if (_spawnedChunks.Count == 0)
+            return;
+
+        float playerDistance = _playerTransform.position.z - _currentChunk.Chunk.Start.z;
         TryDestroyLastChunk(playerDistance);
         TrySpawnNextChunk(playerDistance);
 
-        if (_playerTransform.position.z > _currentChunk.End.z)
+        if (_playerTransform.position.z > _currentChunk.Chunk.End.z)
         {
             _lastChunk = _currentChunk;
             _spawnedChunks.Dequeue();
@@ -64,12 +82,19 @@ public class ChunkFactory : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        _lastChunk.UnloadInternal();
+        for (int i = 0; i < _spawnedChunks.Count; i++)
+            _spawnedChunks.Dequeue().UnloadInternal();
+    }
+
     private void TryDestroyLastChunk(float playerDistance)
     {
         if (canDestroyLastChunk && playerDistance > _lastChunkDestructionDistance)
         {
             canDestroyLastChunk = false;
-            Destroy(_lastChunk?.gameObject);
+            _lastChunk.UnloadInternal();
         }
     }
     
@@ -78,32 +103,30 @@ public class ChunkFactory : MonoBehaviour
         if (canSpawnNextChunk && playerDistance > _chunkSpawnDistance)
         {
             canSpawnNextChunk = false;
+
             var chunk = _chunksPool.Pop();
-
-            if (chunk == _lastChunk)
-                chunk = _chunksPool.Pop();
-
             Spawn(chunk);
 
             if (_chunksPool.Count == 0)
-                _chunksPool = new Stack<Chunk>(Shuffle(_chunksToSpawn));
+                _chunksPool = new Stack<AssetReferenceGameObject>(Shuffle(_chunksToSpawn));
         }
     }
 
-    private void Spawn(Chunk chunk)
+    private async void Spawn(AssetReferenceGameObject chunk)
     {
-        var nextChunk = Instantiate(chunk);
-        var currentChunkPosition = _spawnedChunks.Count > 0 ? _currentChunk.End : _firstChunkStart.position;
-        nextChunk.transform.position -= nextChunk.Start - currentChunkPosition;
+        var nextChunk = new ChunkLoader();
+        await nextChunk.LoadInternal(chunk);
+        var currentChunkPosition = _spawnedChunks.Count > 0 ? _currentChunk.Chunk.End : _firstChunkStart.position;
+        nextChunk.Chunk.transform.position -= nextChunk.Chunk.Start - currentChunkPosition;
         _spawnedChunks.Enqueue(nextChunk);
     }
 
     private void ShuffleChunksPool()
     {
-        _chunksPool = new Stack<Chunk>(Shuffle(_chunksToSpawn));
+        _chunksPool = new Stack<AssetReferenceGameObject>(Shuffle(_chunksToSpawn));
     }
 
-    private Chunk[] Shuffle(Chunk[] chunks)
+    private AssetReferenceGameObject[] Shuffle(AssetReferenceGameObject[] chunks)
     {
         var random = new System.Random();
         for (int i = chunks.Length - 1; i >= 1; i--)
@@ -114,10 +137,5 @@ public class ChunkFactory : MonoBehaviour
         }
 
         return chunks;
-    }
-
-    public void SpawnFinish()
-    {
-        //
     }
 }
