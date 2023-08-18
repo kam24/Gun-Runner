@@ -118,6 +118,7 @@ public class ChunkFactory : MonoBehaviour
         await nextChunk.LoadInternal(chunk);
         var currentChunkPosition = _spawnedChunks.Count > 0 ? _currentChunk.Chunk.End : _firstChunkStart.position;
         nextChunk.Chunk.transform.position -= nextChunk.Chunk.Start - currentChunkPosition;
+        nextChunk.Chunk.Init();
         _spawnedChunks.Enqueue(nextChunk);
     }
 

@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public abstract class Projectile : PoolObject
 {
     [SerializeField] private DamageOrigin _damageOrigin;
     [SerializeField][Min(0)] private float _speed;
@@ -15,7 +15,7 @@ public class Projectile : MonoBehaviour
     private Vector3 _target;
     private Vector3 _direction;
 
-    private float _time = 0;
+    protected float _time = 0;
 
     public virtual void Init(Vector3 initialPosition, Vector3 target, float targetForwardSpeed)
     {
@@ -29,6 +29,11 @@ public class Projectile : MonoBehaviour
         transform.rotation = addRotation * Quaternion.LookRotation(_direction);
     }
 
+    protected virtual void Destroy()
+    {
+        Destroy(gameObject);
+    }
+
     private void FixedUpdate()
     {
         transform.Translate(Time.fixedDeltaTime * _direction, Space.World);
@@ -37,7 +42,7 @@ public class Projectile : MonoBehaviour
     private void Update()
     {
         if (_time > _lifetime)
-            Destroy(gameObject);
+            Destroy();
         _time += Time.deltaTime;
     }
 }

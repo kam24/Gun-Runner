@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Assets.Scripts
+﻿namespace Assets.Scripts
 {
     public class CollectablesController
     {
@@ -12,10 +6,9 @@ namespace Assets.Scripts
         private Health _playerHealth;
         private PlayerCharacter _player;
 
-        public CollectablesController(SubmachineGun gun, Health playerHealth, PlayerCharacter player) 
-        { 
+        public CollectablesController(SubmachineGun gun, PlayerCharacter player)
+        {
             _gun = gun;
-            _playerHealth = playerHealth;
             _player = player;
         }
 
@@ -24,24 +17,9 @@ namespace Assets.Scripts
             bullet.Collected += OnBulletCollected;
         }
 
-        public void Register(CollectableHealth health)
-        {
-            health.Collected += OnHealthCollected;
-        }
-
         public void Unregister(CollectableBullet bullet)
         {
             bullet.Collected -= OnBulletCollected;
-        }
-        
-        public void Unregister(CollectableHealth health)
-        {
-            health.Collected -= OnHealthCollected;
-        }
-
-        private void OnHealthCollected()
-        {
-            _playerHealth.RestoreToMax();
         }
 
         private void OnBulletCollected(ushort _count)

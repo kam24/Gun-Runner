@@ -12,6 +12,7 @@ public class Root : MonoBehaviour
     [SerializeField] private UIController _uiController;
     [SerializeField] private PlayerCharacter _character;
     [SerializeField] private CinemachineShake _cinemachineShake;
+    [SerializeField] private PoolService _poolService;
     [SerializeField] private float mediumLineX;
     [SerializeField] private float sideLineOffset;
     [SerializeField] private int _initialPlayerLine = 1;
@@ -28,18 +29,19 @@ public class Root : MonoBehaviour
     public void Init()
     {
         _router = new PlayerInputRouter(_character);
-        SubmachineGun = new(0);
+        SubmachineGun = new();
         PlayerCharacter = _character;
         InitPlayer();
         _cameraController.Init(_character);
         _cinemachineShake.Init(_character);
         ExplosionRegister = new(_character, _cinemachineShake);
-        CollectablesManager = new(SubmachineGun, _character.Health, _character);
+        CollectablesManager = new(SubmachineGun, _character);
         _enemySpawner.Init(_character);
         _chunkFactory.Init(_character.transform);
         _levelController.Init(_enemySpawner, _chunkFactory);
         _musicController.Init(_enemySpawner);
         _uiController.Init(_character);
+        _poolService.Init();
 
         enabled = true;
     }

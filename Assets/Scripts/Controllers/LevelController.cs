@@ -44,6 +44,9 @@ public class LevelController : MonoBehaviour
 
     private void OnStageChanged()
     {
+        if (_stage.Number == 2)
+            _enemySpawner.SpawnShootingDrone();
+
         if (_stage.Number == 3)
         {
             _chunkFactory.SetSpawningDroneAttackChunks();

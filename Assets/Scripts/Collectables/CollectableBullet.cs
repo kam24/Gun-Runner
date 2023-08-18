@@ -3,15 +3,20 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class CollectableBullet : MonoBehaviour
+    public class CollectableBullet : PoolObject
     {
         [SerializeField] private ushort _count;
 
-        public event Action<ushort> Collected;
+        public event Action<ushort> Collected;        
 
-        public void Awake()
+        private void OnEnable()
         {
             Root.CollectablesManager.Register(this);
+        }
+
+        private void OnDisable()
+        {
+            Root.CollectablesManager.Unregister(this);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -19,8 +24,7 @@ namespace Assets.Scripts
             if (other.gameObject.TryGetComponent<PlayerCharacter>(out _))
             {
                 Collected?.Invoke(_count);
-                Root.CollectablesManager.Unregister(this);
-                Destroy(gameObject);
+                ReturnToPool();
             }
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class Chunk : MonoBehaviour
@@ -8,6 +9,12 @@ public class Chunk : MonoBehaviour
 
     public Vector3 Start => _start.position;
     public Vector3 End => _end.position;
+
+    public void Init()
+    {
+        var bulletTracks = GetComponentsInChildren<BulletsTrack>().ToList();
+        bulletTracks.ForEach(track => track.Init());
+    }
 
     private void Awake()
     {

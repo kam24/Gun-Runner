@@ -33,7 +33,6 @@ public class PlayerCharacter : Damagable
     [SerializeField] private ParticleSystem _gunFlash;
     [SerializeField][Min(0.01f)] private float rateOfFirePerSecond;
     [SerializeField] private float _readyToAimTime;
-    [SerializeField] private BulletProjectile _bulletProjectile;
     [SerializeField] private Transform _shootingPoint;
     [Header("VFX")]
     [SerializeField] private GameObject _bulletCollectedVFX;
@@ -452,8 +451,7 @@ public class PlayerCharacter : Damagable
         //    throw new InvalidOperationException();
         while (Root.SubmachineGun.HasBullets && IsTargetAppeared)
         {
-            var projectile = Instantiate<BulletProjectile>(_bulletProjectile);
-            projectile.Init(_shootingPoint.position, _target.position, _forwardSpeed);
+            PoolService.ProjectilePool.Get(_shootingPoint.position, _target.position, _forwardSpeed);
             Root.SubmachineGun.Shoot();
 
             var flash = Instantiate(_gunFlash, _shootingPoint.position, Quaternion.identity);
